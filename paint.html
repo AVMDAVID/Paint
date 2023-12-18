@@ -1,0 +1,107 @@
+<canvas width="600" height="400"></canvas>
+
+<script>
+    var pantalla = document.querySelector('canvas');
+    var pincel = pantalla.getContext('2d');
+
+    pincel.fillStyle = 'lightgrey';
+    pincel.fillRect(0, 0, 600, 400);
+
+    var color1 = prompt("Ingrese color 1");
+    var color2 = prompt("Ingrese color 2");
+    var color3 = prompt("Ingrese color 3");
+    var x = 0
+    var y = 0   
+    var colorElegido = color1;
+    var puedoDibujar = false;
+
+    function dibujarPaletaColores (){
+        pincel.fillStyle = color1;
+        pincel.fillRect(x, y, 50, 50);
+       // pincel.strokeRect(x, y, 50, 50);
+        pincel.fillStyle = color2;
+        pincel.fillRect(x + 50, y, 50, 50);
+      // pincel.strokeRect(x + 50, y, 50, 50);
+        pincel.fillStyle = color3;
+        pincel.fillRect(x + 100, y, 50, 50);
+      //  pincel.strokeRect(x + 100, y, 50, 50);
+    }
+
+    function captarMovimientoMouse (datos){
+        var x = datos.pageX - pantalla.offsetLeft;
+        var y = datos.pageY - pantalla.offsetTop;
+        if (delimitarArea(x, y)){
+
+            dibujarCirculo(x, y)
+
+        }
+
+    }
+
+    function delimitarArea(posicionX, posicionY){
+
+        if  (posicionX >= 0 && posicionX <= 155 && posicionY <= 55 && posicionY >= 0 ){
+
+            return false
+
+         } else {
+
+            return true
+
+         }
+
+    }
+
+    function cambiarColor (datos){
+
+        var x = datos.pageX - pantalla.offsetLeft;
+        var y = datos.pageY - pantalla.offsetTop;
+        if  (x >=0 && x < 50 && y < 50 && y > 0 ){
+            colorElegido = color1
+        }
+        if  (x > 50 && x < 100 && y < 50 && y > 0 ){
+            colorElegido = color2
+        }
+        if  (x > 100 && x < 150 && y < 50 && y > 0 ){
+            colorElegido = color3
+        }
+    }
+    
+    function dibujarCirculo(x, y) {
+
+        if(puedoDibujar) {
+            
+            pincel.fillStyle = colorElegido;
+            pincel.beginPath();
+            pincel.arc(x, y, 5, 0, 2 * 3.14);
+            pincel.fill();
+        }
+
+    }
+
+
+
+    
+    function habilitarDibujar() {
+
+        puedoDibujar = true;
+    }
+
+    function deshabilitarDibujar() {
+
+        puedoDibujar = false;
+    }
+
+    dibujarPaletaColores ();
+
+    pantalla.onmousemove = captarMovimientoMouse;
+
+    pantalla.onmousedown = habilitarDibujar;
+
+    pantalla.onmouseup = deshabilitarDibujar;
+
+    pantalla.onclick = cambiarColor;
+    
+  
+
+</script>
